@@ -34,6 +34,23 @@ class StoryApi {
     });
     return response.json();
   }
+
+  static async addStory({ description, photo, lat, lon }) {
+    const formData = new FormData();
+    formData.append('description', description);
+    formData.append('photo', photo);
+    if (lat) formData.append('lat', lat);
+    if (lon) formData.append('lon', lon);
+
+    const response = await fetch(ENDPOINTS.STORIES, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${SessionHelper.getToken()}`,
+      },
+      body: formData,
+    });
+    return response.json();
+  }
 }
 
 export default StoryApi;
