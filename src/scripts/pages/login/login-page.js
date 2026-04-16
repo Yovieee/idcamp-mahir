@@ -7,6 +7,7 @@ export default class LoginPage {
       <section class="container auth-container">
         <div class="auth-card">
           <h1>Login</h1>
+          <h2 class="auth-subtitle">Welcome back! Please enter your credentials.</h2>
           <form id="login-form">
             <div class="form-group">
               <label for="email">Email</label>

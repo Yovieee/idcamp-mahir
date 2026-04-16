@@ -35,6 +35,7 @@ export default class AddStoryPage {
         </header>
         
         <div class="add-story-content">
+          <h2 class="section-title">Story Details</h2>
           <form id="add-story-form" class="card">
             <div class="form-group">
               <label for="description">Description</label>
@@ -76,6 +77,7 @@ export default class AddStoryPage {
               </div>
             </div>
 
+            <h2 class="section-title">Location Details</h2>
             <fieldset class="form-group border-none">
               <legend class="form-label font-bold">Location (Optional - Click on map to select)</legend>
               <div id="add-map" class="map-container small"></div>

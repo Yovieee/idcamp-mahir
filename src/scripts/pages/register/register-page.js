@@ -6,6 +6,7 @@ export default class RegisterPage {
       <section class="container auth-container">
         <div class="auth-card">
           <h1>Register</h1>
+          <h2 class="auth-subtitle">Join us to share your amazing stories!</h2>
           <form id="register-form">
             <div class="form-group">
               <label for="name">Name</label>

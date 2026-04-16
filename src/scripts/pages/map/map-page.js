@@ -32,6 +32,7 @@ export default class MapPage {
           <label for="map-search" class="visually-hidden">Search stories on map</label>
           <input type="text" id="map-search" placeholder="Filter by name or description..." class="search-input">
         </div>
+        <h2 class="section-title">Interactive Map</h2>
         <div id="map" class="map-container"></div>
       </section>
     `;
@@ -97,7 +98,7 @@ export default class MapPage {
         const popupContent = `
           <article class="map-popup">
             <img src="${story.photoUrl}" alt="Story photo by ${story.name}" class="popup-img">
-            <h3>${story.name}</h3>
+            <h2 class="popup-title">${story.name}</h2>
             <p>${story.description.substring(0, 100)}${story.description.length > 100 ? '...' : ''}</p>
             <span class="popup-date">${new Date(story.createdAt).toLocaleDateString()}</span>
           </article>

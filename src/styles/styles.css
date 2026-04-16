@@ -151,6 +151,22 @@ header {
   letter-spacing: -0.05em;
 }
 
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-color);
+  letter-spacing: -0.025em;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -481,9 +497,11 @@ header {
   margin-bottom: 10px;
 }
 
-.map-popup h3 {
+.popup-title {
   font-size: 1rem;
+  font-weight: 700;
   margin-bottom: 4px;
+  color: var(--text-color);
 }
 
 .map-popup p {
