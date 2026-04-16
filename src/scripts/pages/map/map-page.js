@@ -98,7 +98,7 @@ export default class MapPage {
         const popupContent = `
           <article class="map-popup">
             <img src="${story.photoUrl}" alt="Story photo by ${story.name}" class="popup-img">
-            <h2 class="popup-title">${story.name}</h2>
+            <h3 class="popup-title">${story.name}</h3>
             <p>${story.description.substring(0, 100)}${story.description.length > 100 ? '...' : ''}</p>
             <span class="popup-date">${new Date(story.createdAt).toLocaleDateString()}</span>
           </article>

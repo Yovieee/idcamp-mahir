@@ -20,6 +20,7 @@ export default class HomePage {
         <div id="loading-container" class="loading-container">
           <p>Fetching stories...</p>
         </div>
+        <h2 class="section-title">Global Story Feed</h2>
         <div id="data-container" class="card-grid"></div>
         <div id="error-container" class="error-container" style="display: none;"></div>
       </section>
@@ -70,7 +71,7 @@ export default class HomePage {
       <article class="card story-card">
         <img src="${item.photoUrl}" alt="Story photo by ${item.name}" class="card-img" loading="lazy">
         <div class="card-content">
-          <h2 class="card-name">${item.name}</h2>
+          <h3 class="card-name">${item.name}</h3>
           <p class="card-date">${new Date(item.createdAt).toLocaleDateString()}</p>
           <p class="card-desc">${item.description.substring(0, 150)}${item.description.length > 150 ? '...' : ''}</p>
         </div>
