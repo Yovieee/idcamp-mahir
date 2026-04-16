@@ -33,6 +33,12 @@ class App {
         }
       });
     });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.#navigationDrawer.classList.remove('open');
+      }
+    });
   }
 
   async renderPage() {

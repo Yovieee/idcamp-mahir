@@ -29,6 +29,7 @@ export default class MapPage {
       <section class="container">
         <h1 class="page-title">Story Map Explorer</h1>
         <div class="map-controls">
+          <label for="map-search" class="visually-hidden">Search stories on map</label>
           <input type="text" id="map-search" placeholder="Filter by name or description..." class="search-input">
         </div>
         <div id="map" class="map-container"></div>
@@ -94,12 +95,12 @@ export default class MapPage {
         const marker = L.marker([story.lat, story.lon]).addTo(this._map);
         
         const popupContent = `
-          <div class="map-popup">
-            <img src="${story.photoUrl}" alt="${story.name}" class="popup-img">
+          <article class="map-popup">
+            <img src="${story.photoUrl}" alt="Story photo by ${story.name}" class="popup-img">
             <h3>${story.name}</h3>
             <p>${story.description.substring(0, 100)}${story.description.length > 100 ? '...' : ''}</p>
             <span class="popup-date">${new Date(story.createdAt).toLocaleDateString()}</span>
-          </div>
+          </article>
         `;
         
         marker.bindPopup(popupContent);

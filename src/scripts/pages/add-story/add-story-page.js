@@ -29,10 +29,10 @@ export default class AddStoryPage {
 
     return `
       <section class="container">
-        <div class="header-actions">
+        <header class="header-actions">
            <h1 class="page-title">Add New Story</h1>
            <a href="#/" class="btn-secondary">Back to Stories</a>
-        </div>
+        </header>
         
         <div class="add-story-content">
           <form id="add-story-form" class="card">
@@ -41,16 +41,17 @@ export default class AddStoryPage {
               <textarea id="description" name="description" rows="4" placeholder="Tell your story..." required class="form-input"></textarea>
             </div>
 
-            <div class="form-group">
-              <label>Image Source</label>
+            <fieldset class="form-group border-none">
+              <legend class="form-label font-bold">Image Source</legend>
               <div class="image-options">
                 <button type="button" id="btn-file-source" class="btn-toggle active">Upload File</button>
                 <button type="button" id="btn-camera-source" class="btn-toggle">Camera</button>
               </div>
-            </div>
+            </fieldset>
 
             <div id="file-source-container" class="source-container">
               <div class="form-group">
+                <label for="photo-file" class="form-label">Select Photo</label>
                 <input type="file" id="photo-file" accept="image/*" class="file-input">
                 <p class="input-hint">Select a photo from your device</p>
               </div>
@@ -70,13 +71,13 @@ export default class AddStoryPage {
 
             <div id="preview-container" class="preview-container hidden">
               <div class="preview-card">
-                <img id="image-preview" src="" alt="Preview">
-                <button type="button" id="btn-remove-photo" class="btn-remove">&times;</button>
+                <img id="image-preview" src="" alt="Preview of your story photo">
+                <button type="button" id="btn-remove-photo" class="btn-remove" aria-label="Remove photo">&times;</button>
               </div>
             </div>
 
-            <div class="form-group">
-              <label>Location (Optional - Click on map to select)</label>
+            <fieldset class="form-group border-none">
+              <legend class="form-label font-bold">Location (Optional - Click on map to select)</legend>
               <div id="add-map" class="map-container small"></div>
               <div class="lat-lon-info">
                 <div class="coords">
@@ -85,7 +86,7 @@ export default class AddStoryPage {
                 </div>
                 <button type="button" id="btn-clear-location" class="btn-text">Clear Location</button>
               </div>
-            </div>
+            </fieldset>
 
             <div id="status-message" class="error-container hidden"></div>
 

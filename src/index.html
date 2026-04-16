@@ -9,6 +9,7 @@
     <script type="module" src="/scripts/index.js"></script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <header>
       <div class="main-header container">
         <a class="brand-name" href="#/">App</a>
@@ -22,10 +23,16 @@
           </ul>
         </nav>
 
-        <button id="drawer-button" class="drawer-button">☰</button>
+        <button id="drawer-button" class="drawer-button" aria-label="Toggle navigation drawer">☰</button>
       </div>
     </header>
 
     <main id="main-content" class="main-content"></main>
+
+    <footer>
+      <div class="container footer-content">
+        <p>&copy; 2024 App Story. All rights reserved.</p>
+      </div>
+    </footer>
   </body>
 </html>

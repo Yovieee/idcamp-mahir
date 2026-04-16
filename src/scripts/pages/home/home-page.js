@@ -10,13 +10,13 @@ export default class HomePage {
 
     return `
       <section class="container">
-        <div class="header-actions">
+        <header class="header-actions">
           <h1 class="page-title">Latest Stories</h1>
           <div class="nav-links">
             <a href="#/map" class="btn-secondary">View Map</a>
             <button id="logout-btn" class="btn-text">Logout</button>
           </div>
-        </div>
+        </header>
         <div id="loading-container" class="loading-container">
           <p>Fetching stories...</p>
         </div>
@@ -67,14 +67,14 @@ export default class HomePage {
     const dataContainer = document.getElementById('data-container');
     
     dataContainer.innerHTML = data.map(item => `
-      <div class="card story-card">
-        <img src="${item.photoUrl}" alt="${item.name}" class="card-img" loading="lazy">
+      <article class="card story-card">
+        <img src="${item.photoUrl}" alt="Story photo by ${item.name}" class="card-img" loading="lazy">
         <div class="card-content">
           <h3 class="card-name">${item.name}</h3>
           <p class="card-date">${new Date(item.createdAt).toLocaleDateString()}</p>
           <p class="card-desc">${item.description.substring(0, 150)}${item.description.length > 150 ? '...' : ''}</p>
         </div>
-      </div>
+      </article>
     `).join('');
   }
 
