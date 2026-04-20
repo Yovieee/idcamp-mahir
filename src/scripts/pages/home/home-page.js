@@ -1,5 +1,6 @@
 import StoryApi from '../../data/api';
 import SessionHelper from '../../utils/session-helper';
+import NotificationHelper from '../../utils/notification-helper';
 
 export default class HomePage {
   async render() {
@@ -13,6 +14,9 @@ export default class HomePage {
         <header class="header-actions">
           <h1 class="page-title">Latest Stories</h1>
           <div class="nav-links">
+            <button id="notification-toggle" class="btn-secondary" title="Toggle Notifications">
+              Checking status...
+            </button>
             <a href="#/map" class="btn-secondary">View Map</a>
             <button id="logout-btn" class="btn-text">Logout</button>
           </div>
@@ -31,6 +35,7 @@ export default class HomePage {
     if (!SessionHelper.isAuthenticated()) return;
 
     this._setupHeaderActions();
+    this._setupNotificationToggle();
     await this._loadData();
   }
 
@@ -42,6 +47,39 @@ export default class HomePage {
         window.location.hash = '/login';
       });
     }
+  }
+
+  async _setupNotificationToggle() {
+    const toggleBtn = document.getElementById('notification-toggle');
+    if (!toggleBtn) return;
+
+    const updateButton = async () => {
+      const isSubscribed = await NotificationHelper.isSubscribed();
+      toggleBtn.innerText = isSubscribed ? 'Disable Notifications' : 'Enable Notifications';
+      toggleBtn.classList.toggle('btn-danger', isSubscribed);
+      toggleBtn.classList.toggle('btn-secondary', !isSubscribed);
+    };
+
+    // Initial state
+    await updateButton();
+
+    toggleBtn.addEventListener('click', async () => {
+      toggleBtn.disabled = true;
+      const isSubscribed = await NotificationHelper.isSubscribed();
+
+      try {
+        if (isSubscribed) {
+          await NotificationHelper.unsubscribeUser();
+        } else {
+          await NotificationHelper.subscribeUser();
+        }
+      } catch (error) {
+        alert('Action failed: ' + error.message);
+      } finally {
+        await updateButton();
+        toggleBtn.disabled = false;
+      }
+    });
   }
 
   async _loadData() {

@@ -405,6 +405,23 @@ header {
   background-color: #f1f5f9;
 }
 
+.btn-danger {
+  padding: 10px 20px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #fca5a5;
+  color: white;
+}
+
 .btn-text {
   background: none;
   border: none;
