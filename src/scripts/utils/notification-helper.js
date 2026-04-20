@@ -1,4 +1,5 @@
 import CONFIG from '../config';
+import StoryApi from '../data/api';
 
 const NotificationHelper = {
   async registerServiceWorker() {
@@ -32,8 +33,11 @@ const NotificationHelper = {
       });
 
       console.log('User subscribed:', subscription);
-      // In a real app, you would send this subscription object to your backend
-      // await this._sendSubscriptionToApi(subscription);
+      
+      const response = await StoryApi.subscribePush(subscription);
+      if (response.error) {
+        throw new Error(response.message);
+      }
       
       return subscription;
     } catch (error) {
@@ -46,9 +50,13 @@ const NotificationHelper = {
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.getSubscription();
     if (subscription) {
+      const response = await StoryApi.unsubscribePush(subscription.endpoint);
+      if (response.error) {
+        throw new Error(response.message);
+      }
+
       await subscription.unsubscribe();
       console.log('User unsubscribed');
-      // In a real app, you would notify your backend to remove this subscription
     }
   },
 

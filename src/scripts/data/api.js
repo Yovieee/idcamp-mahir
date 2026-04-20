@@ -5,6 +5,7 @@ const ENDPOINTS = {
   REGISTER: `${CONFIG.BASE_URL}/register`,
   LOGIN: `${CONFIG.BASE_URL}/login`,
   STORIES: `${CONFIG.BASE_URL}/stories`,
+  SUBSCRIBE: `${CONFIG.BASE_URL}/notifications/subscribe`,
 };
 
 class StoryApi {
@@ -48,6 +49,34 @@ class StoryApi {
         Authorization: `Bearer ${SessionHelper.getToken()}`,
       },
       body: formData,
+    });
+    return response.json();
+  }
+
+  static async subscribePush(subscription) {
+    const rawSubscription = JSON.parse(JSON.stringify(subscription));
+    const response = await fetch(ENDPOINTS.SUBSCRIBE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SessionHelper.getToken()}`,
+      },
+      body: JSON.stringify({
+        endpoint: rawSubscription.endpoint,
+        keys: rawSubscription.keys,
+      }),
+    });
+    return response.json();
+  }
+
+  static async unsubscribePush(endpoint) {
+    const response = await fetch(ENDPOINTS.SUBSCRIBE, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SessionHelper.getToken()}`,
+      },
+      body: JSON.stringify({ endpoint }),
     });
     return response.json();
   }
