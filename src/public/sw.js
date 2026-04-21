@@ -2,14 +2,14 @@ const CACHE_NAME = "storyapp-v1";
 const DYNAMIC_CACHE_NAME = "storyapp-dynamic-v1";
 
 const ASSETS_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/favicon.png",
-  "/manifest.json",
-  "/images/icon-192.png",
-  "/images/icon-512.png",
-  "/scripts/index.js",
-  "/styles/styles.css",
+  "./",
+  "index.html",
+  "favicon.png",
+  "manifest.json",
+  "images/icon-192.png",
+  "images/icon-512.png",
+  "scripts/index.js",
+  "styles/styles.css",
 ];
 
 // Combine all logic into the service worker
@@ -149,7 +149,7 @@ async function syncPendingStories() {
         // Notify user
         self.registration.showNotification('Story Synced!', {
           body: 'Your offline story has been posted successfully.',
-          icon: '/images/icon-192.png',
+          icon: 'images/icon-192.png',
         });
       }
     } catch (error) {
