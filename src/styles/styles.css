@@ -477,6 +477,67 @@ header {
   overflow: hidden;
 }
 
+/* Favorite Button & Header Row */
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.btn-favorite {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.2);
+}
+
+.btn-favorite:active {
+  transform: scale(0.9);
+}
+
+/* Interactive Controls (Favorites Page) */
+.interactive-controls {
+  margin-bottom: 32px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .interactive-controls {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  
+  .search-group {
+    flex: 2;
+  }
+  
+  .filter-sort-row {
+    flex: 1;
+  }
+}
+
+.empty-container {
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+}
+
 /* Map Section */
 .map-container {
   height: 600px;

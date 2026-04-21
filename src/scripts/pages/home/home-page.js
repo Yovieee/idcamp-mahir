@@ -1,6 +1,7 @@
 import StoryApi from '../../data/api';
 import SessionHelper from '../../utils/session-helper';
 import NotificationHelper from '../../utils/notification-helper';
+import { FavoriteStoryIdb } from '../../data/idb-helper';
 
 export default class HomePage {
   async render() {
@@ -18,6 +19,7 @@ export default class HomePage {
               Checking status...
             </button>
             <a href="#/map" class="btn-secondary">View Map</a>
+            <a href="#/favorites" class="btn-secondary">Favorites</a>
             <button id="logout-btn" class="btn-text">Logout</button>
           </div>
         </header>
@@ -101,20 +103,54 @@ export default class HomePage {
     document.getElementById('data-container').innerHTML = '';
   }
 
-  showData(data) {
+  async showData(data) {
     document.getElementById('loading-container').style.display = 'none';
     const dataContainer = document.getElementById('data-container');
     
-    dataContainer.innerHTML = data.map(item => `
-      <article class="card story-card">
-        <img src="${item.photoUrl}" alt="Story photo by ${item.name}" class="card-img" loading="lazy">
-        <div class="card-content">
-          <h3 class="card-name">${item.name}</h3>
-          <p class="card-date">${new Date(item.createdAt).toLocaleDateString()}</p>
-          <p class="card-desc">${item.description.substring(0, 150)}${item.description.length > 150 ? '...' : ''}</p>
-        </div>
-      </article>
-    `).join('');
+    const favoriteStories = await FavoriteStoryIdb.getAllStories();
+    const favoriteIds = favoriteStories.map((s) => s.id);
+
+    dataContainer.innerHTML = data.map(item => {
+      const isFavorite = favoriteIds.includes(item.id);
+      return `
+        <article class="card story-card">
+          <img src="${item.photoUrl}" alt="Story photo by ${item.name}" class="card-img" loading="lazy">
+          <div class="card-content">
+            <div class="card-header-row">
+              <h3 class="card-name">${item.name}</h3>
+              <button class="btn-favorite" data-id="${item.id}" aria-label="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">
+                ${isFavorite ? '❤️' : '🤍'}
+              </button>
+            </div>
+            <p class="card-date">${new Date(item.createdAt).toLocaleDateString()}</p>
+            <p class="card-desc">${item.description.substring(0, 150)}${item.description.length > 150 ? '...' : ''}</p>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    this._setupFavoriteListeners(data);
+  }
+
+  _setupFavoriteListeners(stories) {
+    const favoriteButtons = document.querySelectorAll('.btn-favorite');
+    favoriteButtons.forEach((button) => {
+      button.addEventListener('click', async (event) => {
+        const id = button.getAttribute('data-id');
+        const story = stories.find((s) => s.id === id);
+        
+        const isFavorite = await FavoriteStoryIdb.getStory(id);
+        if (isFavorite) {
+          await FavoriteStoryIdb.deleteStory(id);
+          button.innerText = '🤍';
+          button.setAttribute('aria-label', 'Add to favorites');
+        } else {
+          await FavoriteStoryIdb.putStory(story);
+          button.innerText = '❤️';
+          button.setAttribute('aria-label', 'Remove from favorites');
+        }
+      });
+    });
   }
 
   showError(message) {

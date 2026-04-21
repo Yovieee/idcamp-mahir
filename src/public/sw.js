@@ -114,3 +114,75 @@ self.addEventListener("notificationclick", (event) => {
       }),
   );
 });
+
+// Background Sync
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-stories') {
+    event.waitUntil(syncPendingStories());
+  }
+});
+
+async function syncPendingStories() {
+  const db = await openIndexedDB();
+  const stories = await getAllPendingStories(db);
+
+  for (const story of stories) {
+    try {
+      const formData = new FormData();
+      formData.append('description', story.description);
+      formData.append('photo', story.photo);
+      if (story.lat) formData.append('lat', story.lat);
+      if (story.lon) formData.append('lon', story.lon);
+
+      const response = await fetch('https://story-api.dicoding.dev/v1/stories', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${story.token}`,
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (!result.error) {
+        await deletePendingStory(db, story.id);
+        
+        // Notify user
+        self.registration.showNotification('Story Synced!', {
+          body: 'Your offline story has been posted successfully.',
+          icon: '/images/icon-192.png',
+        });
+      }
+    } catch (error) {
+      console.error('Failed to sync story:', error);
+    }
+  }
+}
+
+// Minimal IndexedDB Helpers for SW (avoiding library issues)
+function openIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('story-app-db', 1);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+  });
+}
+
+function getAllPendingStories(db) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('pending-stories', 'readonly');
+    const store = transaction.objectStore('pending-stories');
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function deletePendingStory(db, id) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('pending-stories', 'readwrite');
+    const store = transaction.objectStore('pending-stories');
+    const request = store.delete(id);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+}

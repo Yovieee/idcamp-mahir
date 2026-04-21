@@ -2,6 +2,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import StoryApi from '../../data/api';
 import SessionHelper from '../../utils/session-helper';
+import { PendingStoryIdb } from '../../data/idb-helper';
 
 // Fix Leaflet marker icons in Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -287,17 +288,40 @@ export default class AddStoryPage {
       return;
     }
 
+    const storyData = {
+      description,
+      photo: this._selectedFile,
+      lat: this._lat,
+      lon: this._lon,
+      token: SessionHelper.getToken(), // Save token for SW to use
+    };
+
+    if (!navigator.onLine) {
+      try {
+        await PendingStoryIdb.addStory(storyData);
+        
+        // Register background sync
+        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+          const registration = await navigator.serviceWorker.ready;
+          await registration.sync.register('sync-stories');
+        }
+
+        alert('You are offline. Your story has been saved and will be uploaded automatically when you are back online.');
+        window.location.hash = '#/';
+        return;
+      } catch (error) {
+        this._showStatus('Failed to save story for offline sync.', 'error');
+        console.error(error);
+        return;
+      }
+    }
+
     try {
       submitBtn.disabled = true;
       submitBtn.innerText = 'Posting...';
       this._showStatus('Uploading story...', 'info');
 
-      const result = await StoryApi.addStory({
-        description,
-        photo: this._selectedFile,
-        lat: this._lat,
-        lon: this._lon,
-      });
+      const result = await StoryApi.addStory(storyData);
 
       if (result.error) {
         this._showStatus(result.message, 'error');
