@@ -32,6 +32,7 @@ self.addEventListener("push", (event) => {
     try {
       const dataJson = event.data.json();
       notificationData = dataJson;
+      console.log(notificationData);
     } catch (e) {
       notificationData.options.body = event.data.text();
     }
@@ -43,9 +44,6 @@ self.addEventListener("push", (event) => {
       notificationData.options,
     ),
   );
-  event.waitUntil(() => {
-    const n = new Notification("My Great Song");
-  });
 });
 
 self.addEventListener("notificationclick", (event) => {
