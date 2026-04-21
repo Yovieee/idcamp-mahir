@@ -1,6 +1,10 @@
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import { clientsClaim } from 'workbox-core';
+
+self.skipWaiting();
+clientsClaim();
 
 // Precache the dynamically hashed Vite assets (HTML, JS, CSS, Images)
 precacheAndRoute(self.__WB_MANIFEST);
