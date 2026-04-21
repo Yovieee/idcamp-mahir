@@ -88,28 +88,47 @@ async function staleWhileRevalidate(request, cacheName) {
 // Push and Notification Handlers (Preserved)
 self.addEventListener("push", (event) => {
   console.log("Push message received:", event);
-  let data = event.data.json();
+  
+  let notificationData = {
+    title: "New Notification",
+    options: {
+      body: "You have a new message.",
+      icon: "images/icon-192.png",
+    },
+  };
+
+  if (event.data) {
+    try {
+      const dataJson = event.data.json();
+      if (dataJson.title) notificationData.title = dataJson.title;
+      if (dataJson.options) {
+        notificationData.options = { ...notificationData.options, ...dataJson.options };
+      }
+    } catch (e) {
+      notificationData.options.body = event.data.text();
+    }
+  }
+
   event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.options.body,
-    }),
+    self.registration.showNotification(notificationData.title, notificationData.options)
   );
 });
 
 self.addEventListener("notificationclick", (event) => {
-  const { url } = event.notification.data;
   event.notification.close();
+  const urlToOpen = (event.notification.data && event.notification.data.url) ? event.notification.data.url : "/";
+
   event.waitUntil(
     clients
       .matchAll({ type: "window", includeUncontrolled: true })
       .then((windowClients) => {
         for (const client of windowClients) {
-          if (client.url.includes(url) && "focus" in client) {
+          if (client.url.includes(urlToOpen) && "focus" in client) {
             return client.focus();
           }
         }
         if (clients.openWindow) {
-          return clients.openWindow(url);
+          return clients.openWindow(urlToOpen);
         }
       }),
   );

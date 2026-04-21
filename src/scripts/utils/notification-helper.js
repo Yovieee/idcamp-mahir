@@ -19,6 +19,9 @@ const NotificationHelper = {
   },
 
   async isSubscribed() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      return false;
+    }
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.getSubscription();
     return Boolean(subscription);
@@ -26,6 +29,15 @@ const NotificationHelper = {
 
   async subscribeUser() {
     try {
+      if (!('Notification' in window)) {
+        throw new Error('This browser does not support notifications.');
+      }
+
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        throw new Error('Notification permission denied');
+      }
+
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
