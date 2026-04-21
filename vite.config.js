@@ -28,7 +28,7 @@ export default defineConfig({
       manifest: {
         name: "App Story",
         short_name: "StoryApp",
-        start_url: "/",
+        start_url: "./",
         display: "standalone",
         background_color: "#ffffff",
         theme_color: "#2196f3",

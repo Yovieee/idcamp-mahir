@@ -9,7 +9,8 @@ const NotificationHelper = {
     }
 
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
+      const swUrl = import.meta.env.BASE_URL + 'sw.js';
+      const registration = await navigator.serviceWorker.register(swUrl);
       console.log('Service Worker registered with scope:', registration.scope);
       return registration;
     } catch (error) {
