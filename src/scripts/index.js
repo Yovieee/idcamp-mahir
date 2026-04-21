@@ -3,6 +3,7 @@ import '../styles/styles.css';
 
 import App from './pages/app';
 import NotificationHelper from './utils/notification-helper';
+import InstallHelper from './utils/install-helper';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const app = new App({
@@ -13,6 +14,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Register service worker
   await NotificationHelper.registerServiceWorker();
+
+  // Initialize PWA Installation helper
+  InstallHelper.init();
 
   await app.renderPage();
 
