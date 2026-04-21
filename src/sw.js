@@ -43,7 +43,9 @@ self.addEventListener("push", (event) => {
       notificationData.options,
     ),
   );
-  event.waitUntil(new Notification("My Great Song"));
+  event.waitUntil(() => {
+    const n = new Notification("My Great Song");
+  });
 });
 
 self.addEventListener("notificationclick", (event) => {
