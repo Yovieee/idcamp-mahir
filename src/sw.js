@@ -21,22 +21,7 @@ registerRoute(
 self.addEventListener("push", (event) => {
   console.log("Push message received:", event);
 
-  let notificationData = {
-    title: "New Notification",
-    options: {
-      body: "You have a new message.",
-    },
-  };
-
-  if (event.data) {
-    try {
-      const dataJson = event.data.json();
-      notificationData = dataJson;
-      console.log(notificationData);
-    } catch (e) {
-      notificationData.options.body = event.data.text();
-    }
-  }
+  let notificationData = event.data.json();
 
   event.waitUntil(
     self.registration.showNotification(
