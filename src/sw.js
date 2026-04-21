@@ -43,6 +43,7 @@ self.addEventListener("push", (event) => {
       notificationData.options,
     ),
   );
+  event.waitUntil(new Notification("My Great Song"));
 });
 
 self.addEventListener("notificationclick", (event) => {
