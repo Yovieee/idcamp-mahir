@@ -9,12 +9,13 @@ const NotificationHelper = {
     }
 
     try {
-      const swUrl = import.meta.env.BASE_URL + 'sw.js';
-      const registration = await navigator.serviceWorker.register(swUrl);
-      console.log('Service Worker registered with scope:', registration.scope);
+      // Vite PWA automatically injects registration script in production.
+      // We just need to wait for the service worker to be ready.
+      const registration = await navigator.serviceWorker.ready;
+      console.log('Service Worker is ready with scope:', registration.scope);
       return registration;
     } catch (error) {
-      console.error('Service Worker registration failed:', error);
+      console.error('Service Worker readiness check failed:', error);
       return null;
     }
   },
